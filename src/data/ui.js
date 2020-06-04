@@ -298,7 +298,7 @@ export const uiData = [
       order: 303,
    },
    {
-      name: "concatInsteadOfPush",
+      name: "concatInsteadOfPushRevise",
       desc: "Add Elements to the End of an Array Using concat Instead of push",
       inputs: 2,
       type: "Functional",

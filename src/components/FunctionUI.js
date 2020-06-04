@@ -5,7 +5,11 @@ export default function functionUI(props) {
       const inputs = [];
       for (let i = 0; i < num; i++) {
          inputs.push(
-            <input type="text" className="form-control inline-action" />
+            <input
+               type="text"
+               className="form-control inline-action"
+               key={props.name + i}
+            />
          );
       }
       return inputs;
