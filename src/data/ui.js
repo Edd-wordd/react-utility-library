@@ -36,7 +36,7 @@ export const uiData = [
       order: 103,
    },
    {
-      name: "Increment",
+      name: "increment",
       desc: "Increment a number",
       inputs: 1,
       type: "basic",
@@ -45,7 +45,7 @@ export const uiData = [
       order: 104,
    },
    {
-      name: "Decrement",
+      name: "decrement",
       desc: "Decrement a number",
       inputs: 1,
       type: "basic",
@@ -72,7 +72,7 @@ export const uiData = [
       order: 107,
    },
    {
-      name: "Concatenating",
+      name: "concatenating",
       desc: "Concatenating Strings with plus operator",
       inputs: 2,
       type: "basic",
@@ -81,7 +81,7 @@ export const uiData = [
       order: 108,
    },
    {
-      name: "ConcatenatingStrings",
+      name: "concatenatingStrings",
       desc: "Concatenating Strings with plus equals operator",
       inputs: 2,
       type: "basic",
@@ -90,7 +90,7 @@ export const uiData = [
       order: 109,
    },
    {
-      name: "ConcatenatingStringVariables",
+      name: "concatenatingStringVariables",
       desc: "Concatenating Strings with variables",
       inputs: 2,
       type: "basic",
