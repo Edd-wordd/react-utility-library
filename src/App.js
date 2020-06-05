@@ -8,6 +8,56 @@ export default class App extends React.Component {
    constructor() {
       super();
       console.log(uiData);
+
+      this.state = {
+         isFavoritesChecked: false,
+         allFuncs: orderBy(uiData, "order", "desc"),
+         displayFuncs: orderBy(uiData, "order", "desc"),
+         orderBy: '["order", "desc"]',
+      };
+   }
+
+   filterFuncs(e) {
+      const allFuncs = [...this.state.allFuncs];
+      const isFavoritesChecked = document.getElementById("viewMode-favorites")
+         .checked;
+      const searchInput = document
+         .getElementById("search input")
+         .value.toLowerCase();
+
+      if (isFavoritesChecked) {
+         this.setState({ isFavoritesChecked: true });
+
+         console.log(isFavoritesChecked);
+         const favoriteFuncs = allFuncs.filter((func) => {
+            return func.isFavorite;
+         });
+         const orderArr = JSON.parse(this.state.orderBy);
+         console.log("orderArr: ", orderArr);
+         console.log(favoriteFuncs);
+         const filteredFuncs = favoriteFuncs.filter((func) => {
+            return func.name.toLowerCase().indexOf(searchInput) >= 0;
+         });
+         const orderedFuncs = orderBy(filteredFuncs, ...orderArr);
+         this.setState({ displayFuncs: orderedFuncs });
+      } else {
+         this.setState({ isFavoritesChecked: false });
+
+         const filteredFuncs = allFuncs.filter((func) => {
+            return func.name.toLowerCase().indexOf(searchInput) >= 0;
+         });
+         const orderArr = JSON.parse(this.state.orderBy);
+         console.log("orderArr: ", ...orderArr);
+         const orderedFuncs = orderBy(filteredFuncs, ...orderArr);
+
+         this.setState({ displayFuncs: orderedFuncs });
+         console.log(isFavoritesChecked);
+      }
+   }
+   changeOrder(e) {
+      this.setState({ orderBy: e.target.value }, () => {
+         this.filterFuncs();
+      });
    }
    render() {
       const sortedData = uiData.sort((a, b) => {
@@ -18,7 +68,6 @@ export default class App extends React.Component {
          return uiData.length;
       };
 
-      const orderedData = orderBy(uiData, "name", "asc");
       return (
          <div className="container">
             <div className="row">
@@ -35,6 +84,8 @@ export default class App extends React.Component {
                         id="viewMode-all"
                         name="viewMode"
                         className="custom-control-input"
+                        checked={!this.state.isFavoritesChecked}
+                        onChange={(e) => this.filterFuncs(e)}
                      />
                      <label
                         className="custom-control-label"
@@ -49,6 +100,8 @@ export default class App extends React.Component {
                         id="viewMode-favorites"
                         name="viewMode"
                         className="custom-control-input"
+                        checked={this.state.isFavoritesChecked}
+                        onChange={(e) => this.filterFuncs(e)}
                      />
                      <label
                         className="custom-control-label"
@@ -66,19 +119,24 @@ export default class App extends React.Component {
                            aria-label="search all functions "
                            aria-describedby="search-input"
                            id="search input"
+                           onChange={(e) => this.filterFuncs(e)}
                         />
                      </div>
                      <div className="col-6">
-                        <select className="form-control">
-                           <option>Most Recent</option>
-                           <option>Oldest</option>
-                           <option>A-Z</option>
-                           <option>Z-A</option>
+                        <select
+                           value={this.state.orderBy}
+                           className="form-control"
+                           onChange={(e) => this.changeOrder(e)}
+                        >
+                           <option value='["order","desc"]'>Most Recent</option>
+                           <option value='["order","asc"]'>Oldest</option>
+                           <option value='["name","asc"]'>A-Z</option>
+                           <option value='["name","desc"]'>Z-A</option>
                         </select>
                      </div>
                   </div>
                </div>
-               {orderedData.map((functionUI) => {
+               {this.state.displayFuncs.map((functionUI) => {
                   const { name, desc, inputs } = functionUI;
 
                   return (

@@ -593,7 +593,7 @@ export const uiData = [
       inputs: 1,
       type: "regex",
       typeNum: 500,
-      isFavorite: false,
+      isFavorite: true,
       order: 510,
    },
    {
@@ -629,7 +629,7 @@ export const uiData = [
       inputs: 1,
       type: "regex",
       typeNum: 500,
-      isFavorite: false,
+      isFavorite: true,
       order: 514,
    },
    {
