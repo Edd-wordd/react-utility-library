@@ -2,25 +2,27 @@ import React from "react";
 import utils from "../utils/utils";
 import { convertDataType } from "../utils/helpers";
 
-export default function functionUI(props) {
-   console.log(utils.add(5, 5));
-   const renderInputs = (num) => {
-      const inputs = [];
-      for (let i = 0; i < num; i++) {
-         const id = `input-${props.name}-${i}`;
-         inputs.push(
-            <input
-               type="text"
-               className="form-control inline-action"
-               key={id}
-               id={id}
-            />
-         );
-      }
-      return inputs;
-   };
+export default class FunctionUI extends React.Component {
+   constructor() {
+      super();
+      this.state = {
+         isResultDisplayed: false,
+         isCodeDisplayed: false,
+         result: "",
+      };
+   }
 
-   function getUserInput() {
+   toggleCodeDisplay() {
+      console.log("clicked");
+      if (this.state.isCodeDisplayed === false) {
+         this.setState({ isCodeDisplayed: true });
+      } else {
+         this.setState({ isCodeDisplayed: false });
+      }
+   }
+   getUserInput() {
+      const props = this.props;
+
       console.log("clicked");
       const inputValues = [];
       for (let i = 0; i < props.inputs; i++) {
@@ -28,31 +30,61 @@ export default function functionUI(props) {
          const value = element.value;
          const convertedValue = convertDataType(value);
          inputValues.push(convertedValue);
-         console.log(inputValues);
       }
+      console.log(inputValues);
+      const result = utils[props.name](...inputValues);
+      console.log(result);
+      this.setState({
+         result: JSON.stringify(result),
+         isResultDisplayed: true,
+      });
    }
 
-   return (
-      <div className="col-12 col-lg-8 offset-lg-2 mb-5">
-         <p className="name">
-            <b>{props.name}</b> - {props.desc}
-         </p>
-         <pre style={{ display: "none" }}>
-            <code></code>
-         </pre>
-         <div className="actions float-right">
-            {renderInputs(props.inputs)}
+   render() {
+      const props = this.props;
 
-            <button
-               className="btn btn-primary inline-action"
-               onClick={() => getUserInput()}
-            >
-               Run
-            </button>
+      console.log(utils.add(5, 5));
+      const renderInputs = (num) => {
+         const inputs = [];
+         for (let i = 0; i < num; i++) {
+            const id = `input-${props.name}-${i}`;
+            inputs.push(
+               <input
+                  type="text"
+                  className="form-control inline-action"
+                  key={id}
+                  id={id}
+               />
+            );
+         }
+         return inputs;
+      };
+
+      return (
+         <div className="col-12 col-lg-8 offset-lg-2 mb-5">
+            <p className="name" onClick={() => this.toggleCodeDisplay()}>
+               <b>{props.name}</b> - {props.desc}
+            </p>
+            {this.state.isCodeDisplayed && (
+               <pre>
+                  <code>{String(utils[props.name])}</code>
+               </pre>
+            )}
+            <div className="actions float-right">
+               {renderInputs(props.inputs)}
+
+               <button
+                  className="btn btn-primary inline-action"
+                  onClick={() => this.getUserInput()}
+               >
+                  Run
+               </button>
+            </div>
+            <div className="clearfix mb-3"></div>
+            {this.state.isResultDisplayed && (
+               <div className="alert alert-primary">{this.state.result}</div>
+            )}
          </div>
-         <div className="clearfix mb-3"></div>
-         <div className="alert alert-primary" style={{ display: "none" }}></div>
-         <div className="alert alert-danger" style={{ display: "none" }}></div>
-      </div>
-   );
+      );
+   }
 }
