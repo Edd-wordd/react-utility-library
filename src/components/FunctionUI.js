@@ -1,5 +1,6 @@
 import React from "react";
 import utils from "../utils/utils";
+import { convertDataType } from "../utils/helpers";
 
 export default function functionUI(props) {
    console.log(utils.add(5, 5));
@@ -25,7 +26,8 @@ export default function functionUI(props) {
       for (let i = 0; i < props.inputs; i++) {
          const element = document.getElementById(`input-${props.name}-${i}`);
          const value = element.value;
-         inputValues.push(value);
+         const convertedValue = convertDataType(value);
+         inputValues.push(convertedValue);
          console.log(inputValues);
       }
    }

@@ -60,10 +60,6 @@ export default class App extends React.Component {
       });
    }
    render() {
-      const sortedData = uiData.sort((a, b) => {
-         return b.order - a.order;
-      });
-
       const getFunctionsNum = () => {
          return uiData.length;
       };
